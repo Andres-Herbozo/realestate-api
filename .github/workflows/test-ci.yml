@@ -11,11 +11,11 @@ jobs:
     name: Test API en Node.js ${{ matrix.node }}
     runs-on: ubuntu-latest
 
-    strategy:  # <- este bloque debe estar dentro de 'test'
+    strategy:
       matrix:
-        node: [24.x]  # <- este bloque debe estar dentro de 'strategy'  
+        node: [24.x]
 
-    steps:  # <- también dentro de 'test'
+    steps:
       - name: Checkout del código
         uses: actions/checkout@v3
       
@@ -24,19 +24,26 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       
-      - name: Cachear dependencias npm
+      - name: Instalar pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      - name: Cachear dependencias pnpm
         uses: actions/cache@v3
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: |
+            ~/.pnpm-store
+            node_modules
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-node-
+            ${{ runner.os }}-pnpm-
       
       - name: Instalar dependencias
-        run: npm ci
+        run: pnpm install --frozen-lockfile
       
       - name: Ejecutar pruebas con Jest
-        run: npm test
+        run: pnpm test
       
       - name: Reportar éxito
         if: success()

@@ -27,7 +27,7 @@ jobs:
       - name: Instalar pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 10
       
       - name: Cachear dependencias pnpm
         uses: actions/cache@v3
@@ -40,7 +40,7 @@ jobs:
             ${{ runner.os }}-pnpm-
       
       - name: Instalar dependencias
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
       
       - name: Ejecutar pruebas con Jest
         run: pnpm test

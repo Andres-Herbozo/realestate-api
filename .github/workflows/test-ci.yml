@@ -13,7 +13,7 @@ jobs:
 
     strategy:  # <- este bloque debe estar dentro de 'test'
       matrix:
-        node: [20.x, 22.x]  # <- este bloque debe estar dentro de 'strategy'  
+        node: [24.x]  # <- este bloque debe estar dentro de 'strategy'  
 
     steps:  # <- también dentro de 'test'
       - name: Checkout del código
